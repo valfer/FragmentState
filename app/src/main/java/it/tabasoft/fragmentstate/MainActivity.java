@@ -71,6 +71,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        /**
+         * On pop secondFragment is not anymore in the stack
+         */
+
+        //TODO
+
+        // nel caso di back press bisogna risettare curFragment
+
+
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 

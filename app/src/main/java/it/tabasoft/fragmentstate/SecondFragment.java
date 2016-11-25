@@ -108,17 +108,18 @@ public class SecondFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
     private void setState() {
 
+        String newStateInfo;
         if (buttonPressed) {
-            stateTextView.setText("You pressed the Button");
+            newStateInfo = "You pressed the Button";
         } else {
-            stateTextView.setText("The Button is up");
+            newStateInfo = "The Button is up";
         }
+        stateTextView.setText(newStateInfo);
     }
 
 }

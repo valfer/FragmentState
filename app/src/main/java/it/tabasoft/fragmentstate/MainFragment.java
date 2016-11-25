@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -17,6 +18,11 @@ import android.widget.Toast;
 
 public class MainFragment extends Fragment implements SecondFragmentDelegate {
 
+
+    /**
+     * Interface
+     */
+    TextView statoTextView;
 
     public static MainFragment newInstance() {
 
@@ -51,6 +57,9 @@ public class MainFragment extends Fragment implements SecondFragmentDelegate {
             }
         });
 
+        statoTextView = (TextView)view.findViewById(R.id.statoTextView);
+        statoTextView.setText(MyData.sharedInstance().getStr());
+
         return view;
     }
 
@@ -60,5 +69,7 @@ public class MainFragment extends Fragment implements SecondFragmentDelegate {
         String debugStr = "MainFragment delegate buttonPressed: " + newState;
         Log.d(MainActivity.TAG, debugStr);
         Toast.makeText(context, debugStr, Toast.LENGTH_LONG).show();
+
+        MyData.sharedInstance().setStr(newState ? "ON" : "OFF");
     }
 }
