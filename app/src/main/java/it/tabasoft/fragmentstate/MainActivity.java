@@ -12,8 +12,8 @@ import android.util.Log;
  * 2) se secondFragment ha un dato di input, questo deve essere settato come Arg
  * 3) se invece ha uno stato va fatto in savedInstance e onCreate (buttonPressed)
  * 4) il main fragment si passa come delegate e viene avvisato al press del button
- * 4) Prova anche col kill dell'app (de developer Options) e vedi che funziona tutto
- * 5) però su kill attento a oggetti esterni al fragment, tipo singleton (e punta ad articolo:
+ * 5) Prova anche col kill dell'app (de developer Options) e vedi che funziona tutto
+ * 6) però su kill attento a oggetti esterni al fragment, tipo singleton (e punta ad articolo:
  * https://medium.com/inloop/android-process-kill-and-the-big-implications-for-your-app-1ecbed4921cb#.n6zckfjfm
  *
  */
@@ -77,21 +77,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         Log.d(TAG, "MainActivity onDestroy");
     }
 
-    public void gotoFragment(Fragment fragment) {
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-        String fragmentTag = fragment.getClass().toString();
-        ft.replace(R.id.container, fragment, fragmentTag).
-                addToBackStack(fragmentTag).
-                commit();
-    }
-
-    public Fragment getFragmentByTag(String tag) {
-
-        return getSupportFragmentManager().findFragmentByTag(tag);
-    }
-
     @Override
     public void onBackStackChanged() {
 
@@ -104,4 +89,21 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
                 curFragment = fm.findFragmentByTag(fragmentTag);
         }
     }
+
+    void gotoFragment(Fragment fragment) {
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+        String fragmentTag = fragment.getClass().toString();
+        ft.replace(R.id.container, fragment, fragmentTag).
+                addToBackStack(fragmentTag).
+                commit();
+    }
+
+    Fragment getFragmentByTag(String tag) {
+
+        return getSupportFragmentManager().findFragmentByTag(tag);
+    }
+
+
 }

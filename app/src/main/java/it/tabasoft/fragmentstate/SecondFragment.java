@@ -31,7 +31,7 @@ public class SecondFragment extends Fragment {
      */
     private TextView stateTextView;
 
-    public static <T extends Fragment & SecondFragmentDelegate> SecondFragment newInstance(String title, T delegate) {
+    static <T extends Fragment & SecondFragmentDelegate> SecondFragment newInstance(String title, T delegate) {
 
         SecondFragment f = new SecondFragment();
 
