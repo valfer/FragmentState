@@ -3,17 +3,14 @@ package it.tabasoft.fragmentstate;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 /**
- * Created by valfer on 25/11/16.
+ * Created by valfer on 25/11/16. Tabasoft Srls
  */
 
 public class SecondFragment extends Fragment {
@@ -34,13 +31,13 @@ public class SecondFragment extends Fragment {
      */
     private TextView stateTextView;
 
-    public static SecondFragment newInstance(String title, SecondFragmentDelegate delegate) {
+    public static <T extends Fragment & SecondFragmentDelegate> SecondFragment newInstance(String title, T delegate) {
 
         SecondFragment f = new SecondFragment();
 
         Bundle args = new Bundle();
         args.putString("title", title);
-        args.putString("delegate", ((Fragment) delegate).getTag());
+        args.putString("delegate", delegate.getTag());
         f.setArguments(args);
 
         return f;

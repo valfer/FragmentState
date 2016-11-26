@@ -1,16 +1,16 @@
 package it.tabasoft.fragmentstate;
 
 /**
- * Created by valfer on 25/11/16.
+ * Created by valfer on 25/11/16. Tabasoft Srls
  */
 
-public class MyData {
+class MyData {
 
     private String str = "";
 
     private static MyData ref;
 
-    public static synchronized MyData sharedInstance() {
+    static synchronized MyData sharedInstance() {
         if (ref == null)
             ref = new MyData();
         return ref;
@@ -21,11 +21,11 @@ public class MyData {
         throw new CloneNotSupportedException();
     }
 
-    public String getStr() {
+    String getStr() {
         return str;
     }
 
-    public void setStr(String str) {
+    void setStr(String str) {
         this.str = str;
     }
 }

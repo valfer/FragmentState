@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Created by valfer on 25/11/16.
+ * Created by valfer on 25/11/16. Tabasoft Srls
  */
 
 public class MainFragment extends Fragment implements SecondFragmentDelegate {
@@ -26,9 +26,7 @@ public class MainFragment extends Fragment implements SecondFragmentDelegate {
 
     public static MainFragment newInstance() {
 
-        MainFragment mainFragment = new MainFragment();
-
-        return mainFragment;
+        return new MainFragment();
     }
 
 
@@ -53,7 +51,8 @@ public class MainFragment extends Fragment implements SecondFragmentDelegate {
             public void onClick(View view) {
 
                 MainActivity activity = (MainActivity)getActivity();
-                activity.gotoSecondFragment(MainFragment.this);
+                SecondFragment secondFragment = SecondFragment.newInstance("This is the Title (passed from main fragment)", MainFragment.this);
+                activity.gotoFragment(secondFragment);
             }
         });
 

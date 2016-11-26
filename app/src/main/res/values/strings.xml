@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FragmentState</string>
+    <string name="mainfragment">MainFragment</string>
+    <string name="goto_second_fragment">Goto Second Fragment</string>
 </resources>

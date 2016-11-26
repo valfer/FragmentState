@@ -1,15 +1,11 @@
 package it.tabasoft.fragmentstate;
 
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
 
 /**
  * 1) secondo fragment e quando l'app resume torniamo sullo stesso fragment mostrato precedentemente
@@ -21,7 +17,7 @@ import android.widget.Toast;
  * https://medium.com/inloop/android-process-kill-and-the-big-implications-for-your-app-1ecbed4921cb#.n6zckfjfm
  *
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
     static final String TAG = "FRAGMENT-STATE-APP";
 
@@ -35,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "MainActivity onCreate");
 
 
-        FragmentManager fm = getSupportFragmentManager();
+        final FragmentManager fm = getSupportFragmentManager();
         if (savedInstanceState != null) {
             /**
              * With this code we show the last fragment after app resumes from background
@@ -45,14 +41,18 @@ public class MainActivity extends AppCompatActivity {
             /**
              * First time app launches
              */
-            MainFragment mainFragment = MainFragment.newInstance();
-            curFragment = mainFragment;
+            curFragment = MainFragment.newInstance();
         }
+
+        /**
+         * Questa serve per sapere (su back press) quale è il nuovo cur fragment
+         */
+        fm.addOnBackStackChangedListener(this);
 
         String fragmentTag = curFragment.getClass().toString();
         fm.beginTransaction()
                 .replace(R.id.container, curFragment, fragmentTag)
-                .addToBackStack(null)
+                .addToBackStack(fragmentTag)
                 .commit();
     }
 
@@ -71,38 +71,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        /**
-         * On pop secondFragment is not anymore in the stack
-         */
-
-        //TODO
-
-        // nel caso di back press bisogna risettare curFragment
-
-
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
 
         Log.d(TAG, "MainActivity onDestroy");
     }
 
-    public void gotoSecondFragment(SecondFragmentDelegate delegate) {
-
-        SecondFragment secondFragment = SecondFragment.newInstance("This is the Title (passed from main fragment)", delegate);
+    public void gotoFragment(Fragment fragment) {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-        String secondFragmentTag = secondFragment.getClass().toString();
-        ft.replace(R.id.container, secondFragment, secondFragmentTag).
-                addToBackStack(null).
+        String fragmentTag = fragment.getClass().toString();
+        ft.replace(R.id.container, fragment, fragmentTag).
+                addToBackStack(fragmentTag).
                 commit();
-        curFragment = secondFragment;
     }
 
     public Fragment getFragmentByTag(String tag) {
@@ -110,4 +92,16 @@ public class MainActivity extends AppCompatActivity {
         return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
+    @Override
+    public void onBackStackChanged() {
+
+        FragmentManager fm = getSupportFragmentManager();
+        int stackCount = fm.getBackStackEntryCount();
+        if (stackCount > 0) {
+            FragmentManager.BackStackEntry bse = fm.getBackStackEntryAt(stackCount - 1);
+            String fragmentTag = bse.getName();
+            if (fragmentTag != null)
+                curFragment = fm.findFragmentByTag(fragmentTag);
+        }
+    }
 }
